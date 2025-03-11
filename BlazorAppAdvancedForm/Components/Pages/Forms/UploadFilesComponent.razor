@@ -1,0 +1,44 @@
+﻿@page "/upload-files"
+<h3>UploadFiles Component</h3>
+
+<div class="form">
+    <div class="form-group">
+        <InputFile class="form-control" OnChange="uploadFiles"></InputFile>
+
+        @if (file != null)
+        {
+            <p class="lead">File Name: @file.Name</p>
+            <p>File Type: @file.ContentType</p>
+            <p>@uploadMessage</p>
+        }
+    </div>
+</div>
+
+@code {
+    private IBrowserFile file;
+    private string uploadMessage = string.Empty;
+
+    public async Task uploadFiles(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            if (e.File != null)
+            {
+                file = e.File;
+                string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files");
+                string filePath = Path.Combine(folderPath, file.Name);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.OpenReadStream().CopyToAsync(fileStream);
+                }
+                uploadMessage = "file uploaded successfull";
+            }
+        }
+        catch (Exception ex)
+        {
+            uploadMessage = string.Concat("Error to upload file: ", ex.Message);
+            throw;
+        }
+    }
+}

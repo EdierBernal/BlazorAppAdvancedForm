@@ -1,0 +1,39 @@
+﻿@page "/data-types"
+<h3>Data Types Component</h3>
+
+<div class="form">
+    <div class="form-group">
+        <EditForm Model="@dataTypes">
+            <label for="dataTypes.PropString">Prop String</label>
+            <InputText class="form-control" @bind-value="dataTypes.PropString"></InputText>
+
+            <label for="dataTypes.PropPassword">Prop Password</label>
+            <InputText class="form-control" @bind-value="dataTypes.PropPassword" type="password"></InputText>
+
+            <label for="dataTypes.PropInteger">Prop Integer</label>
+            <InputNumber class="form-control" @bind-value="dataTypes.PropInteger"></InputNumber>
+
+            <label for="dataTypes.PropDouble">Prop Double</label>
+            <InputNumber class="form-control" @bind-value="dataTypes.PropDouble"></InputNumber>
+
+            <label for="dataTypes.PropBool">Prop Bool</label>
+            <InputCheckbox class="form-check" @bind-value="dataTypes.PropBool"></InputCheckbox>
+
+            <label for="dataTypes.PropDate">Prop Date</label>
+            <InputDate class="form-control" @bind-value="dataTypes.PropDate"></InputDate>
+
+            <label for="dataTypes.PropDropDownList">Prop DropDownList</label>
+            <InputSelect class="form-control" @bind-value="dataTypes.PropDropDownList">
+                <option value="">-Select any option-</option>
+                <option value="1">--option 01--</option>
+                <option value="2">--option 02--</option>
+                <option value="3">--option 03--</option>
+                <option value="4">--option 04--</option>
+            </InputSelect>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private DataTypes dataTypes = new DataTypes();
+}

@@ -1,0 +1,95 @@
+﻿@page "/cascading-selector"
+<h3>Cascading Selector Component</h3>
+
+<div class="form">
+    <div class="form-group">
+        <EditForm Model="@cascadingSelector">
+            <select class="form-control" @onchange="itemsManagement">
+                <option value="">-Select-</option>
+                @foreach (var item in items)
+                {
+                    <option value="@item.Key">@item.Value</option>
+                }
+            </select>
+            <br />
+            @if (subItems.Count > 0)
+            {
+                <select class="form-control" @onchange="subItemsManagement">
+                    @foreach (var subItem in subItems)
+                    {
+                        <option value="@subItem.Key">@subItem.Value</option>
+                    }
+                </select>
+            }
+
+        </EditForm>
+    </div>
+</div>
+@code {
+    private CascadingSelector cascadingSelector = new CascadingSelector();
+    private Dictionary<int, string> items = new Dictionary<int, string>();
+    private Dictionary<int, string> subItems = new Dictionary<int, string>();
+
+    public CascadingSelectorComponent()
+    {
+        items.Add(1, "Latam");
+        items.Add(2, "Europe");
+    }
+
+    public void itemsManagement(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            if (string.IsNullOrWhiteSpace(e.Value.ToString()))
+            {
+                cascadingSelector.Selector01 = 0;
+                cascadingSelector.Selector02 = 0;
+                subItems = new Dictionary<int, string>();
+                return;
+            }
+            cascadingSelector.Selector01 = int.Parse(e.Value.ToString());
+
+            switch (cascadingSelector.Selector01)
+            {
+                case 1:
+                    subItems = new Dictionary<int, string>();
+                    subItems.Add(1, "Colombia");
+                    subItems.Add(2, "Ecuador");
+                    subItems.Add(3, "Perú");
+                    subItems.Add(4, "Uruguay");
+                    subItems.Add(5, "Argentina");
+                    break;
+                case 2:
+                    subItems = new Dictionary<int, string>();
+                    subItems.Add(1, "Spain");
+                    subItems.Add(2, "Germany");
+                    subItems.Add(3, "India");
+                    subItems.Add(4, "Italy");
+                    subItems.Add(5, "France");
+                    break;
+
+                default: subItems = new Dictionary<int, string>(); break;
+            }
+        }
+        else
+        {
+            Console.WriteLine("event is null: ", e.Value);
+        }
+    }
+
+    public void subItemsManagement(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            if (e.Value != null && string.IsNullOrWhiteSpace(e.Value.ToString()))
+            {
+                return;
+            }
+            cascadingSelector.Selector02 = int.Parse(e.Value.ToString());
+        }
+        else
+        {
+            Console.WriteLine("event is null: ", e.Value);
+        }
+    }
+}
